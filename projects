@@ -1,0 +1,500 @@
+user_time = list(input("Enter the time: ").split(":"))
+
+# Append ':' before index 1
+user_time.insert(1, ":")
+# print(user_time)
+pref_clock = input("Choose the clock type (12 or 24): ")
+
+# Define lists for each number using dictionary
+regular_list = {
+    '0': ["000", "0 0", "0 0", "0 0", "000"],
+    '1': [" 1 ", "11", " 1 ", " 1 ", "111"],
+    '2': ["222", "  2", "222", "2", "222"],
+    '3': ["333", "  3", "333", "  3", "333"],
+    '4': ['4 4', '4 4', '444', '  4', '  4'],
+    '5': ['555', '5', '555', '  5', '555'],
+    '6': ['666', '6', '666', '6 6', '666'],
+    '7': ['777', '  7', '  7', '  7', '  7'],
+    '8': ['888', '8 8', '888', '8 8', '888'],
+    '9': ['999', '9 9', '999', '  9', '999'],
+    ':': [' ', ':', ' ', ':', ' '],
+}
+list_A = [" A ", "A A", "AAA", "A A", "A A"]
+list_M = ["M   M", "MM MM", "M M M", "M   M", "M   M"]
+list_P = ["PPP", "P P", "PPP", "P", "P"]
+# function for printing the regular list
+
+# function for replacing with special char, don't confuse variables
+# this spec_list is messing things up because if I keep reusing the function, the spec_list is going to append element to this same list
+# which I don't want. I only want the element to be appended to a new list, each is it's called
+spec_list = []
+
+def replace_spec_char(user_list, pref_char):
+    new_str_list = []
+    for item in user_list:
+        new_str = ""
+        # checks if the item within the list contains a non-space
+        for char in item:
+            # if non-space character, add to the new string with preferred special character
+            if char.strip():
+                new_str += pref_char
+            # if not, just add the space
+            else:
+                new_str += char
+        # appends to a new list
+        new_str_list.append(new_str)
+    return (new_str_list)
+    
+# Allow user to choose a special character or none
+pref_char = input("Enter your preferred character: ")
+
+# if special char in the strings or special is a space then it works
+if pref_char in ("abcdeghkmnopqrsuvwxyz@$&*=") or pref_char == "":
+    pref_char = pref_char
+# if special char is not "" and special char is not in the strings, 
+# this will activate
+while pref_char != "" and pref_char not in ("abcdeghkmnopqrsuvwxyz@$&*="):
+    pref_char = input("Character not permitted! Try again: ")
+    if pref_char not in ("abcdeghkmnopqrsuvwxyz@$&*="):
+        continue 
+    else:
+        pref_char = pref_char
+
+char1 = char2 = char3 = char4 = char5 = []
+
+if pref_clock == "12":
+    if pref_char == "":
+        if (len(user_time[0])) == 2:
+            # checks if greater than 12
+            int_index0 = int(user_time[0])
+            # this is for ["13", ":", "46"]
+            if 12 < int_index0 < 22:
+                # subtract in integer then convert to string and list
+                new_user_time = (str(int_index0 - 12))
+                # removes the first index and gets the correct format
+                # new list is a copy of the user_time 
+                new_list = user_time[:]
+                # new_list.pop(0)
+                new_list.pop(0)
+                new_list.insert(0, new_user_time)
+                
+                if len(new_list) == 3:
+                    if new_list[0] in regular_list:
+                        char1 = regular_list[new_list[0]]
+                    # colon
+                    char2 = regular_list[":"]
+
+                    # minutes
+                    if 2 <=len(new_list[2]) < 3:
+                        if new_list[2][0] in regular_list:
+                            char3 = regular_list[new_list[2][0]]
+                        if new_list[2][1] in regular_list:
+                            char4 = regular_list[new_list[2][1]]
+            
+            elif int_index0 == 12:
+                new_list = user_time[:]
+                if len(user_time) == 3:
+                    if new_list[0][0] in regular_list:
+                        char1 = regular_list[new_list[0][0]]
+                    if new_list[0][1] in regular_list:
+                        char_index01 = regular_list[new_list[0][1]]
+
+                    char2 = regular_list[":"]
+
+                    if 2 <= len(new_list[2]) < 3:
+                        if new_list[2][0] in regular_list:
+                            char3 = regular_list[new_list[2][0]]
+                        if new_list[2][1] in regular_list:
+                            char4 = regular_list[new_list[2][1]]
+
+            elif 10 <= int_index0 <= 11:
+                new_list = user_time[:]
+                if len(new_list) == 3:
+                    if new_list[0][0] in regular_list:
+                        char1 = regular_list[new_list[0][0]]
+
+                    if new_list[0][1] in regular_list:
+                        char_index01 = regular_list[new_list[0][1]]
+                    # this is colon
+                    char2 = regular_list[":"]
+                    if 2 <= len(new_list[2]) < 3:
+                        if new_list[2][0] in regular_list:
+                            char3 = regular_list[new_list[2][0]]
+
+                        if new_list[2][1] in regular_list:
+                            char4 = regular_list[new_list[2][1]]
+
+            elif int_index0 == 22 or int_index0 == 23:
+                new_user_time = (str(int_index0 - 12))
+                # removes the first index and gets the correct format
+                # new list is a copy of the user_time 
+                new_list = user_time[:]
+                # new_list.pop(0)
+                new_list.pop(0)
+                new_list.insert(0, new_user_time)
+
+                if len(user_time) == 3:
+                    if new_list[0][0] in regular_list:
+                        char1 = regular_list[new_list[0][0]]
+                    if new_list[0][1] in regular_list:
+                        char_index01 = regular_list[new_list[0][1]]
+
+                    char2 = regular_list[":"]
+                    if 2 <= (len(user_time[2])) < 3:
+
+                        if new_list[2][0] in regular_list:
+                            char3 = regular_list[new_list[2][0]]
+                        if new_list[2][1] in regular_list:
+                            char4 = regular_list[new_list[2][1]]
+  
+        # ["1", ":", "46"] only three elements # add new_list as a copy of user_time
+        elif len(user_time[0]) == 1 and len(user_time) ==3:
+            int_index0 = int(user_time[0])
+            # if int_index0 == 0, then add 12, then return as new_list
+            if int_index0 == 0:
+                new_user_time = (str(int_index0 + 12))
+                # ["0", ":", "56"]
+                # pop the 0th index
+                new_list = user_time[:]
+                new_list.pop(0)
+                new_list.insert(0, new_user_time)
+
+                # should now be ["12", ":", "56"]
+                if len(new_list[0]) == 2:
+                    if new_list[0][0] in regular_list:
+                        char1 = regular_list[new_list[0][0]]
+                    if new_list[0][1] in regular_list:
+                        char_index01 = regular_list[new_list[0][1]]
+                    char2 = regular_list[":"]
+                    if 2 <= len(new_list[2]) < 3:
+                        if new_list[2][0] in regular_list:
+                            char3 = regular_list[new_list[2][0]]
+                        if new_list[2][1] in regular_list:
+                            char4 = regular_list[new_list[2][1]]
+            else:
+                new_list = user_time[:]    
+                if new_list[0] in regular_list:
+                    char1 = regular_list[new_list[0]]
+                # this is the colon
+                char2 = regular_list[":"]
+
+                if 2 <= len(new_list[2]) < 3:
+                    if new_list[2][0] in regular_list:
+                        char3 = regular_list[new_list[2][0]]
+
+                    if new_list[2][1] in regular_list:
+                        char4 = regular_list[new_list[2][1]]
+
+# special char in 12 hour clock
+    elif pref_char in "abcdeghkmnopqrsuvwxyz@$&*=":
+    # if len of user
+    # this is for ["13", ":", "46"]
+        if (len(user_time[0])) == 2:
+            # checks if greater than 12
+            int_index0 = int(user_time[0])
+            # print(int_index0)
+            if 12 < int_index0 < 22:
+                # subtract in integer then convert to string and list
+                new_user_time = (str(int_index0 - 12))
+                # removes the first index and gets the correct format
+                # new list is a copy of the user_time 
+                new_list = user_time[:]
+                # new_list.pop(0)
+                new_list.pop(0)
+                new_list.insert(0, new_user_time)
+# print("New list", new_list)          
+
+                if len(new_list) == 3:
+                    if new_list[0] in regular_list:
+                        char1 = list(replace_spec_char(regular_list[new_list[0]], pref_char))
+                    # colon
+                    char2 = regular_list[":"]
+
+                    # minutes # char 3 and 4 are being appended to char1
+                    if 2 <= len(new_list[2]) < 3:
+                        if new_list[2][0] in regular_list:
+                            char3 = list(replace_spec_char((regular_list[new_list[2][0]]), pref_char))
+
+                        if user_time[2][1] in regular_list:
+                            char4 = list(replace_spec_char((regular_list[new_list[2][1]]), pref_char))
+
+            # this is for 11 and 10, 12 hour clock:, add this to regular clock
+            elif 10 <= int_index0 <= 11: 
+                new_list = user_time[:]
+                if len(new_list) == 3:
+                    if new_list[0][0] in regular_list:
+                        char1 =  list(replace_spec_char(regular_list[new_list[0][0]], pref_char))
+                    if new_list[0][1] in regular_list:
+                        char_index01 = list(replace_spec_char(regular_list[new_list[0][1]], pref_char))
+                    # char 2 is colon
+                    char2 = regular_list[":"]
+                    if 2 <= len(new_list[2]) < 3:
+                        if new_list[2][0] in regular_list:
+                            char3 = list(replace_spec_char((regular_list[new_list[2][0]]), pref_char))
+                        if user_time[2][1] in regular_list:
+                                char4 = list(replace_spec_char((regular_list[new_list[2][1]]), pref_char))
+
+            # this is for ["12", ":", "00"], should be PM
+            elif int_index0 == 12:
+                new_list = user_time[:]
+                if len(user_time) == 3:
+                    if new_list[0][0] in regular_list:
+                        char1 = list(replace_spec_char(regular_list[new_list[0][0]], pref_char))
+                    if new_list[0][1] in regular_list:
+                        char_index01 = list(replace_spec_char(regular_list[new_list[0][1]], pref_char))
+                    char2 = regular_list[":"]
+                    if 2 <= len(new_list[2]) < 3:
+                        if new_list[2][0] in regular_list:
+                            char3 = list(replace_spec_char((regular_list[new_list[2][0]]), pref_char))
+                        if new_list[2][1] in regular_list:
+                            char4 = list(replace_spec_char((regular_list[new_list[2][1]]), pref_char))
+
+
+            # this is for ["22", ":", "46"] turns into ["10", ":", "46"]
+            elif int_index0 == 22 or int_index0 == 23:
+                  # subtract in integer then convert to string and list
+                new_user_time = (str(int_index0 - 12))
+                # removes the first index and gets the correct format
+                # new list is a copy of the user_time 
+                new_list = user_time[:]
+                # new_list.pop(0)
+                new_list.pop(0)
+                new_list.insert(0, new_user_time)
+
+                if len(user_time) == 3:
+                    if new_list[0][0] in regular_list:
+                        char1 =  list(replace_spec_char(regular_list[new_list[0][0]], pref_char))
+                    if new_list[0][1] in regular_list:
+                        char_index01 = list(replace_spec_char(regular_list[new_list[0][1]], pref_char))
+
+                    char2 = regular_list[":"]
+                    if 2 <= (len(user_time[2])) < 3:
+
+                        if new_list[2][0] in regular_list:
+                            char3 = list(replace_spec_char((regular_list[new_list[2][0]]), pref_char))
+                        if new_list[2][1] in regular_list:
+                            char4 = list(replace_spec_char((regular_list[new_list[2][1]]), pref_char))
+
+        # ["1", ":", "46"] only three elements # add new_list as a copy of user_time
+        elif len(user_time[0]) == 1 and len(user_time) == 3:
+
+            int_index0 = int(user_time[0])
+            # if int_index0 == 0, then add 12, then return as new_list
+            # for ["0", ":", "57"] but with special character
+            if int_index0 == 0:
+                new_user_time = (str(int_index0 + 12))
+                # ["0", ":", "56"]
+                # pop the 0th index
+                new_list = user_time[:]
+                new_list.pop(0)
+                new_list.insert(0, new_user_time)
+
+                # should now be ["12", ":", "56"]
+                if len(new_list[0]) == 2:
+                    if new_list[0][0] in regular_list:
+                        char1 = list(replace_spec_char(regular_list[new_list[0][0]], pref_char))
+
+                    if new_list[0][1] in regular_list:
+                        char_index01 = list(replace_spec_char(regular_list[new_list[0][1]], pref_char))
+                    char2 = regular_list[":"]
+                    if 2 <= len(new_list[2]) < 3:
+                        if new_list[2][0] in regular_list:
+                            char3 = list(replace_spec_char(regular_list[new_list[2][0]], pref_char))
+                        if new_list[2][1] in regular_list:
+                            char4 = list(replace_spec_char(regular_list[new_list[2][1]], pref_char))
+            
+            # for others with special character with len(user_tim[0]) == 1
+            else:
+                new_list = user_time[:]
+                if new_list[0] in regular_list:
+                    char1 = list(replace_spec_char(regular_list[new_list[0]], pref_char))
+                # this is colon
+                char2 = regular_list[":"]
+
+                if 2<= len(new_list[2]) < 3:
+                    if new_list[2][0] in regular_list:
+                        char3 = list(replace_spec_char(regular_list[new_list[2][0]], pref_char))
+
+                    if new_list[2][1] in regular_list:
+                        char4 = list(replace_spec_char(regular_list[new_list[2][1]], pref_char))
+
+# pref_clock = 24
+elif pref_clock == "24":
+    # if there's no pref char, then proceed to access the dictionary as normal
+    if pref_char == "":
+        # ["1", ":", "34"]
+        if len(user_time[0]) == 1:
+            int_index0 = int(user_time[0])
+            # copy of user_time input
+            new_list = user_time[:]
+
+            if new_list[0] in regular_list:
+                char1 = regular_list[new_list[0]]
+            # if the length of index 0 of the user_time is > 1:
+            char2 = regular_list[":"]
+
+            if 2 <= len(user_time[2]) <3:
+                if new_list[2][0] in regular_list:
+                    char3 = regular_list[new_list[2][0]]
+
+                if user_time[2][1] in regular_list:
+                    char4 = regular_list[new_list[2][1]]
+
+        elif len(user_time[0]) == 2:
+            int_index0 = int(user_time[0])
+            # copy of the user_time input
+            new_list = user_time[:]
+
+            if new_list[0][0] in regular_list:
+                char1 = list(regular_list[new_list[0][0]])
+            # ["13", ":", "46"]
+            if new_list[0][1] in regular_list:
+                char_index01 = list(regular_list[new_list[0][1]])
+
+            char2 = regular_list[":"]
+
+            if 2 <= len(user_time[2]) < 3:
+                
+                if new_list[2][0] in regular_list:
+                    char3 = list(regular_list[new_list[2][0]])
+
+                if new_list[2][1] in regular_list:
+                    char4 = list(regular_list[new_list[2][1]])
+
+# this replaces the numbers in 24 hour clock with special character
+    elif pref_char in "abcdeghkmnopqrsuvwxyz@$&*=":
+        # ["1", ":", "34"] with special character
+        if len(user_time[0]) == 1:
+            
+            int_index0 = int(user_time[0])
+            # copy of user_time input
+            new_list = user_time[:]
+
+            if new_list[0] in regular_list:
+                char1 = list(replace_spec_char(regular_list[new_list[0]], pref_char))
+            # if the length of index 0 of the user_time is > 1:
+            char2 = regular_list[":"]
+
+            if 2 <= len(user_time[2]) <3:
+                if new_list[2][0] in regular_list:
+                    char3 = list(replace_spec_char(regular_list[new_list[2][0]], pref_char))
+
+                if user_time[2][1] in regular_list:
+                    char4 = list(replace_spec_char(regular_list[new_list[2][1]], pref_char))
+
+        # ["13", ":", "46"] but with special character
+        elif len(user_time[0]) == 2:
+            int_index0 = int(user_time[0])
+            # copy of the user_time input
+            new_list = user_time[:]
+
+            if new_list[0][0] in regular_list:
+                char1 = list(replace_spec_char(regular_list[new_list[0][0]], pref_char))
+
+            if new_list[0][1] in regular_list:
+                char_index01 = list(replace_spec_char(regular_list[new_list[0][1]], pref_char))
+
+            char2 = regular_list[":"]
+
+            if 2 <= len(user_time[2]) < 3:
+                if new_list[2][0] in regular_list:
+                    char3 = list(replace_spec_char(regular_list[new_list[2][0]], pref_char))
+                if new_list[2][1] in regular_list:
+                    char4 = list(replace_spec_char(regular_list[new_list[2][1]], pref_char))
+
+print()
+# for printing the clock format
+if pref_clock == "12":
+    if pref_char == "":
+
+         # this is for ["13", ":", "46"] add pm
+        if len(user_time[0]) == 2:
+            if 12 < int_index0 < 22:
+                for item1, item2, item3, item4, item5, item6 in zip(char1, char2, char3, char4, list_P, list_M):
+                    print(f"{item1:<3} {item2:<1} {item3:<3} {item4:<3} {item5:<3} {item6:<5}")
+            # this is for 10 and 11 am
+            elif 10 <= int_index0 <= 11:
+                for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_A, list_M):
+                    print(f"{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}")
+            # this is for 12 pm
+            elif int_index0 == 12:
+                for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_P, list_M):
+                    print(f"{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}")
+            # this is for 22 and 23 pm
+            elif int_index0 == 22 or int_index0 == 23:
+                for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_P, list_M):
+                    print(f"{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}")
+
+            # this is form time of 10, 11, but this is am, for this one I can put (fine because int_index0 is checking first)
+            # else:
+            #     for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_A, list_M):
+            #         print(f"{item1:<3} {item2:<1} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}")
+        
+        # this part works for regular character
+        # add am, ["1", ":", "46"]
+        if len(user_time[0]) == 1:
+
+            if int_index0 == 0:
+                for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_A, list_M):
+                      print(f'{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}')          
+            else:             
+                for item1, item2, item3, item4, item5, item6 in zip(char1, char2, char3, char4, list_A, list_M):
+                      print(f'{item1:<3} {item2:<1} {item3:<3} {item4:<3} {item5:<3} {item6:<5}')
+        
+    elif pref_char in "abcdeghkmnopqrsuvwxyz@$&*=":
+
+         # this is for ["13", ":", "46"] add pm
+        if len(user_time[0]) == 2:
+            if 12 < int_index0 < 22:
+                for item1, item2, item3, item4, item5, item6 in zip(char1, char2, char3, char4, list_P, list_M):
+                    print(f"{item1:<3} {item2:<1} {item3:<3} {item4:<3} {item5:<3} {item6:<5}")
+            # this is for 10 and 11 am
+            elif 10 <= int_index0 <= 11:
+                for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_A, list_M):
+                    print(f"{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}")
+            # this is for 12 pm
+            elif int_index0 == 12:
+                for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_P, list_M):
+                    print(f"{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}")
+            # this is for 22 and 23 pm
+            elif int_index0 == 22 or int_index0 == 23:
+                for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_P, list_M):
+                    print(f"{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}")
+
+            # this is form time of 10, 11, but this is am, for this one I can put (fine because int_index0 is checking first)
+            # else:
+            #     for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_A, list_M):
+            #         print(f"{item1:<3} {item2:<1} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}")
+        # this part works
+        # add am, ["1", ":", "46"]
+        if len(user_time[0]) == 1:
+            
+            if int_index0 == 0:
+                for item1, item2, item3, item4, item5, item6, item7 in zip(char1, char_index01, char2, char3, char4, list_A, list_M):
+                      print(f'{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3} {item6:<3} {item7:<5}')          
+            else:             
+                for item1, item2, item3, item4, item5, item6 in zip(char1, char2, char3, char4, list_A, list_M):
+                      print(f'{item1:<3} {item2:<1} {item3:<3} {item4:<3} {item5:<3} {item6:<5}')
+        
+
+elif pref_clock == "24":
+    if pref_char == "":
+        #[]"1", ":", "46"]
+        if len(user_time[0]) == 1:
+            for item1, item2, item3, item4 in zip(char1, char2, char3, char4):
+                print(f"{item1:<3} {item2:<1} {item3:<3} {item4:<3}")
+
+        #["13", ":", "46"]
+        elif len(user_time[0]) == 2:
+            for item1, item2, item3, item4, item5 in zip(char1, char_index01, char2, char3, char4):
+                print(f"{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3}")
+
+    elif pref_char in "abcdeghkmnopqrsuvwxyz@$&*=":
+        #["1", ":", "46"] but with special character
+        if len(user_time[0]) == 1:
+            for item1, item2, item3, item4 in zip(char1, char2, char3, char4):
+                print(f"{item1:<3} {item2:<1} {item3:<3} {item4:<3}")
+        #["13", ":", "46"] but with special character
+        elif len(user_time[0]) == 2:
+            for item1, item2, item3, item4, item5 in zip(char1, char_index01, char2, char3, char4):
+                print(f"{item1:<3} {item2:<3} {item3:<1} {item4:<3} {item5:<3}")
